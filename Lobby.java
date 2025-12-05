@@ -45,9 +45,9 @@ public class Lobby extends JPanel{
         Graphics2D p2 = (Graphics2D) p;//lets me do the rectangle and circle cutout
 
         //Background
-        p.setColor(new Color(99, 99, 99));
+        p.setColor(new Color(138, 109, 25));
         p.fillRect(0, 0, width, height);
-
+        p.setColor(Color.BLACK);
 
 
         p.setColor(Color.BLACK);
