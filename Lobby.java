@@ -15,13 +15,6 @@ public class Lobby extends JPanel{
         this.width = width;
         this.height = height;
         carpetWidth = width/15;
-        // JLabel label = new JLabel("Slots");
-        // label.setFont(new Font("Serif", Font.PLAIN, 30));
-        // label.setForeground(Color.white);
-        // label.setHorizontalAlignment(SwingConstants.CENTER);
-        // label.setVerticalAlignment(SwingConstants.CENTER);
-        // label.setBounds(0,height-carpetWidth,carpetWidth,carpetWidth/2);
-        // add(label);
         labelMaker("Slots",0,height-carpetWidth);
         labelMaker("Blackjack",carpetWidth*3,height-carpetWidth);
         labelMaker("Pai Gow Poker",width-carpetWidth,height-carpetWidth);
@@ -48,6 +41,14 @@ public class Lobby extends JPanel{
         p.setColor(new Color(138, 109, 25));
         p.fillRect(0, 0, width, height);
         p.setColor(Color.BLACK);
+        int tileNum = 40;
+        for (int h = 0;h < tileNum*1.5;h++){
+            for (int i = 0;i < tileNum*1.5;i++){
+                drawTile(p, (int) (width/(tileNum*1.5)*i), (int) (width/(tileNum*1.5)*h),(int) (width/(tileNum*2.5)));
+            }
+        }
+        // drawTile(p2, 0, 0, 50);
+
 
 
         p.setColor(Color.BLACK);
@@ -73,16 +74,33 @@ public class Lobby extends JPanel{
         p.fillRect(width-carpetWidth*4,height-carpetWidth,carpetWidth,carpetWidth);
     }
 
+    private void drawTile(Graphics p,int x,int y,int widthT){
+        int [][][] polys = {{{x+widthT/2, y},{x+widthT/4, y+widthT/4},{x+widthT/2, y+widthT/2},{x+widthT/4*3, y+widthT/4}},
+                            {{x, y+widthT/2},{x+widthT/4, y+widthT/4},{x+widthT/2, y+widthT/2},{x+widthT/2, y+widthT}},
+                            {{x+widthT/2, y+widthT/2},{x+widthT/2, y+widthT},{x+widthT, y+widthT/2},{x+widthT/4*3, y+widthT/4}},
+                            };
+        int [][] colors = {{247, 0, 0},{92, 92, 92},{220, 220, 220}};
+        Polygon poly;
+        for (int polyn = 0;polyn < polys.length;polyn++){
+            poly = new Polygon();
+            for (int[] point : polys[polyn]) {//Hard to understand for loop but cool
+                poly.addPoint(point[0], point[1]);
+            }
+            p.setColor(new Color(colors[polyn][0],colors[polyn][1],colors[polyn][2]));
+            p.fillPolygon(poly);
+        }
+    }
+
     private void drawCutout(Graphics2D p,int x,int y,String type){
-        int width = (type.indexOf("full") != -1) ? carpetWidth*2 : ((type.indexOf("left") != -1) ? carpetWidth : carpetWidth*2);
-        int height = (type.indexOf("b") == -1) ? carpetWidth : carpetWidth*2;
-        Area rect = new Area(new Rectangle2D.Double(x,y,width,height));
+        int widthC = (type.contains("full")) ? carpetWidth*2 : ((type.contains("left")) ? carpetWidth : carpetWidth*2);
+        int heightC = (!type.contains("b")) ? carpetWidth : carpetWidth*2;
+        Area rect = new Area(new Rectangle2D.Double(x,y,widthC,heightC));
         Area cir = new Area(new Ellipse2D.Double(x,y,carpetWidth*2,carpetWidth*2));
-        if (type.indexOf("right") != -1) {
+        if (type.contains("right")) {
             Area rect2 = new Area(new Rectangle2D.Double(x,y,carpetWidth,carpetWidth*2));
             rect.subtract(rect2);
         }
-        if (type.indexOf("b") != -1) {
+        if (type.contains("b")) {
             Area rect2 = new Area(new Rectangle2D.Double(x,y,carpetWidth*2,carpetWidth));
             rect.subtract(rect2);
         }
