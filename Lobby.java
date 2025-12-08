@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Area;//have the intercetction between square and circle cut out of the square
+import java.awt.geom.Ellipse2D;//have the intercetction between square and circle cut out of the square
 import java.awt.geom.Rectangle2D;//have the intercetction between square and circle cut out of the square
 /**
  * Lobby panel that draws a casino themed layout.
