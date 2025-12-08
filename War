@@ -20,49 +20,63 @@ public class War
         int betAmount = 0;
         List<Card> userHand = gameDeck.drawCard(26);
         List<Card> dealerHand = gameDeck.drawCard(26);
-        for (int i = 0; i < userHand.size() - 1 && i < dealerHand.size() - 1; i++){
+        while (true){
             if (money <= 0){
                 slowPrint("You're out of money");
                 break;
             }
             slowPrintnln("How much would you like to bet: $");
             betAmount = input.nextInt();
-            slowPrint("Player: " + userHand.get(i).getName());
-            slowPrint("Dealer: " + dealerHand.get(i).getName());
-            if (userHand.get(i).getValue() > dealerHand.get(i).getValue()){
+            slowPrint("Player: " + userHand.get(0).getName());
+            slowPrint("Dealer: " + dealerHand.get(0).getName());
+            if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
                 slowPrint("Player wins");
                 money += betAmount;
                 playerWins++;
 
-            } else if (userHand.get(i).getValue() < dealerHand.get(i).getValue()){
+            } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
                 slowPrint("Dealer wins");
                 money -= betAmount;
                 dealerWins++;
 
             } else {
                 slowPrint("Tie, go to War!");
-                boolean war = true;
-                int warNum = 1;
-                while (war){
-                    slowPrint("Player: " + userHand.get(i + warNum).getName());
-                    slowPrint("Dealer: " + dealerHand.get(i + warNum).getName());
-                    if (userHand.get(i + warNum).getValue() > dealerHand.get(i + warNum).getValue()){
+                while (true){
+                    if (userHand.size() == 0) {
+                        gameDeck = new Deck();
+                        gameDeck.shuffleDeck();
+                        userHand = gameDeck.drawCard(26);
+                        dealerHand = gameDeck.drawCard(26);
+                    }
+                    slowPrint("Player: " + userHand.get(0).getName());
+                    slowPrint("Dealer: " + dealerHand.get(0).getName());
+                    if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
                         slowPrint("Player wins the War");
                         money += betAmount;
-                        war = false;
                         playerWins++;
-                    } else if (userHand.get(i + warNum).getValue() < dealerHand.get(i + warNum).getValue()){
+                        break;
+                    } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
                         slowPrint("Dealer wins the War");
                         money -= betAmount;
-                        war = false;
                         dealerWins++;
+                        break;
                     } else {
                         slowPrint("Tie, go to War! Again");
+                        userHand.remove(0);
+                        dealerHand.remove(0);
                     }
                 }
             }
             slowPrint("You have $" + money + " left");
             betAmount = 0;
+            userHand.remove(0);
+            dealerHand.remove(0);
+            if (userHand.size() == 0){
+                gameDeck = new Deck();
+                gameDeck.shuffleDeck();
+                userHand = gameDeck.drawCard(26);
+                dealerHand = gameDeck.drawCard(26);
+            }
             System.out.println();
         }
         if (playerWins > dealerWins){
