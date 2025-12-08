@@ -1,0 +1,102 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class War
+{
+    private static Deck gameDeck;
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        gameDeck = new Deck();
+        gameDeck.shuffleDeck();
+
+        // War
+        int money = 1000;
+        int dealerWins = 0;
+        int playerWins = 0;
+        int betAmount = 0;
+        List<Card> userHand = gameDeck.drawCard(26);
+        List<Card> dealerHand = gameDeck.drawCard(26);
+        for (int i = 0; i < userHand.size() - 1 && i < dealerHand.size() - 1; i++){
+            slowPrintnln("How much would you like to bet: ");
+            betAmount = input.nextLine();
+            slowPrint("Player: " + userHand.get(i).getName());
+            slowPrint("Dealer: " + dealerHand.get(i).getName());
+            if (userHand.get(i).getValue() > dealerHand.get(i).getValue()){
+                slowPrint("Player wins");
+                input.nextLine();
+
+            } else if (userHand.get(i).getValue() < dealerHand.get(i).getValue()){
+                slowPrint("Dealer wins");
+                input.nextLine();
+
+            } else {
+                slowPrint("Tie, go to War!");
+                boolean war = true;
+
+                while (war){
+                    slowPrint("Player: " + userHand.get(i + 3).getName());
+                    slowPrint("Dealer: " + dealerHand.get(i + 3).getName());
+                    if (userHand.get(i + 1).getValue() > dealerHand.get(i + 1).getValue()){
+                        slowPrint("Player wins the War");
+                        input.nextLine();
+                        war = false;
+                    } else if (userHand.get(i + 1).getValue() < dealerHand.get(i + 1).getValue()){
+                        slowPrint("Dealer wins the War");
+                        input.nextLine();
+                        war = false;
+                    } else {
+                        slowPrint("Tie, go to War! Again");
+                        input.nextLine();
+                    }
+                    i++;
+                }
+            }
+            money -= betAmount;
+            betAmount = 0;
+        }
+        if (playerWins > dealerWins){
+            slowPrint("Player won the game");
+        } else if (dealerWins > playerWins){
+            slowPrint("Dealer won the game");
+        } else {
+            slowPrint("Tie!!!");
+        }
+    }
+    
+    public static void slowPrint(String strMessage) {
+        char[] chars = strMessage.toCharArray();
+
+        for (char c : chars) {
+            System.out.print(c);
+            sleep(50);
+        }
+        System.out.println();
+    }
+    
+    public static void slowPrintnln(String strMessage) {
+        char[] chars = strMessage.toCharArray();
+
+        for (char c : chars) {
+            System.out.print(c);
+            sleep(50);
+        }
+    }
+    
+    public static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            // ignored
+        }
+    }
+    
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+}
