@@ -44,7 +44,7 @@ public class Lobby extends JPanel{
         int tileNum = 40;
         for (int h = 0;h < tileNum*1.5;h++){
             for (int i = 0;i < tileNum*1.5;i++){
-                drawTile(p, (int) (width/(tileNum*1.5)*i), (int) (width/(tileNum*1.5)*h),(int) (width/(tileNum*2.5)));
+                drawTile(p, (int) (width/(tileNum*1.5)*i), (int) (width/(tileNum*1.5)*h) - ((i%2 == 0) ? 0 : (int) (width/(tileNum*1.5)/2)),(int) (width/(tileNum*2.5)));
             }
         }
         // drawTile(p2, 0, 0, 50);
