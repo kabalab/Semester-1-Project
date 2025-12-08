@@ -25,8 +25,15 @@ public class War
                 slowPrint("You're out of money");
                 break;
             }
-            slowPrintnln("How much would you like to bet: $");
-            betAmount = input.nextInt();
+            while (true){
+                slowPrintnln("How much would you like to bet: $");
+                betAmount = input.nextInt();
+                if (betAmount > money){
+                    slowPrint("You don't have that much, try again, you only have $" + money);
+                } else {
+                    break;
+                }
+            }
             slowPrint("Player: " + userHand.get(0).getName());
             slowPrint("Dealer: " + dealerHand.get(0).getName());
             if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
