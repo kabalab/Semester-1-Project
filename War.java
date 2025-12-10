@@ -1,7 +1,4 @@
-import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class War
@@ -49,7 +46,7 @@ public class War
             } else {
                 slowPrint("Tie, go to War!");
                 while (true){
-                    if (userHand.size() == 0) {
+                    if (userHand.isEmpty()) {
                         gameDeck = new Deck();
                         gameDeck.shuffleDeck();
                         userHand = gameDeck.drawCard(26);
@@ -78,7 +75,7 @@ public class War
             betAmount = 0;
             userHand.remove(0);
             dealerHand.remove(0);
-            if (userHand.size() == 0){
+            if (userHand.isEmpty()){
                 gameDeck = new Deck();
                 gameDeck.shuffleDeck();
                 userHand = gameDeck.drawCard(26);
@@ -93,6 +90,7 @@ public class War
         } else {
             slowPrint("Tie!!!");
         }
+        input.close();
     }
     
     public static void slowPrint(String strMessage) {
