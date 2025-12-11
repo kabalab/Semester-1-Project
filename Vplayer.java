@@ -21,4 +21,11 @@ public class Vplayer extends JPanel{
     public boolean isVis(int room){
         return visible[room % 4];
     }
+
+    public void bound(){
+        if (x-size/2 < 0) x = size/2;
+        if (y - size < 0) y = size;
+        if (x + size/2 > width) x = width - size/2;
+        if (y + size > height) y = height - size;
+    }
 }
