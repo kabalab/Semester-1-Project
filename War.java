@@ -8,9 +8,9 @@ public class War
 {
     private static Deck gameDeck;
     public static void main(String[] args){
-        war();
+        war(1000);
     }
-    public static int war() {
+    public static int war(int totalMoney) {
         Scanner input = new Scanner(System.in);
         gameDeck = new Deck();
         gameDeck.shuffleDeck();
