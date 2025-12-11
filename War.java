@@ -1,32 +1,37 @@
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class War
 {
     private static Deck gameDeck;
-    public static void main(String[] args)
-    {
+    public static void main(String[] args){
+        war();
+    }
+    public static int war() {
         Scanner input = new Scanner(System.in);
         gameDeck = new Deck();
         gameDeck.shuffleDeck();
 
         // War
-        int money = 1000;
+        int totalMoney = 1000;
         int dealerWins = 0;
         int playerWins = 0;
         int betAmount = 0;
         List<Card> userHand = gameDeck.drawCard(26);
         List<Card> dealerHand = gameDeck.drawCard(26);
         while (true){
-            if (money <= 0){
-                slowPrint("You're out of money");
+            if (totalMoney <= 0){
+                slowPrint("You're out of totalMoney");
                 break;
             }
             while (true){
                 slowPrintnln("How much would you like to bet: $");
                 betAmount = input.nextInt();
-                if (betAmount > money){
-                    slowPrint("You don't have that much, try again, you only have $" + money);
+                if (betAmount > totalMoney){
+                    slowPrint("You don't have that much, try again, you only have $" + totalMoney);
                 } else {
                     break;
                 }
@@ -35,18 +40,18 @@ public class War
             slowPrint("Dealer: " + dealerHand.get(0).getName());
             if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
                 slowPrint("Player wins");
-                money += betAmount;
+                totalMoney += betAmount;
                 playerWins++;
 
             } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
                 slowPrint("Dealer wins");
-                money -= betAmount;
+                totalMoney -= betAmount;
                 dealerWins++;
 
             } else {
                 slowPrint("Tie, go to War!");
                 while (true){
-                    if (userHand.isEmpty()) {
+                    if (userHand.size() == 0) {
                         gameDeck = new Deck();
                         gameDeck.shuffleDeck();
                         userHand = gameDeck.drawCard(26);
@@ -56,12 +61,12 @@ public class War
                     slowPrint("Dealer: " + dealerHand.get(0).getName());
                     if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
                         slowPrint("Player wins the War");
-                        money += betAmount;
+                        totalMoney += betAmount;
                         playerWins++;
                         break;
                     } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
                         slowPrint("Dealer wins the War");
-                        money -= betAmount;
+                        totalMoney -= betAmount;
                         dealerWins++;
                         break;
                     } else {
@@ -71,11 +76,11 @@ public class War
                     }
                 }
             }
-            slowPrint("You have $" + money + " left");
+            slowPrint("You have $" + totalMoney + " left");
             betAmount = 0;
             userHand.remove(0);
             dealerHand.remove(0);
-            if (userHand.isEmpty()){
+            if (userHand.size() == 0){
                 gameDeck = new Deck();
                 gameDeck.shuffleDeck();
                 userHand = gameDeck.drawCard(26);
@@ -90,7 +95,7 @@ public class War
         } else {
             slowPrint("Tie!!!");
         }
-        input.close();
+        return totalMoney;
     }
     
     public static void slowPrint(String strMessage) {
@@ -124,5 +129,4 @@ public class War
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-
 }
