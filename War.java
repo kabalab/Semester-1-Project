@@ -1,132 +1,182 @@
-import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class War
-{
-    private static Deck gameDeck;
-    public static void main(String[] args){
-        war(1000);
-    }
-    public static int war(int totalMoney) {
-        Scanner input = new Scanner(System.in);
-        gameDeck = new Deck();
-        gameDeck.shuffleDeck();
+public class War implements Game {
 
-        // War
-        int totalMoney = 1000;
-        int dealerWins = 0;
-        int playerWins = 0;
-        int betAmount = 0;
-        List<Card> userHand = gameDeck.drawCard(26);
-        List<Card> dealerHand = gameDeck.drawCard(26);
-        while (true){
-            if (totalMoney <= 0){
-                slowPrint("You're out of totalMoney");
+    private Deck gameDeck;
+    private List<Card> userHand;
+    private List<Card> dealerHand;
+
+    private int totalMoney;
+    private int betAmount;
+    private int dealerWins;
+    private int playerWins;
+
+    private boolean gameOver = false;
+
+    private Scanner input = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        Game game = new War(1000);
+        game.startGame();
+    }
+
+    public War(int startingMoney) {
+        this.totalMoney = startingMoney;
+    }
+
+
+    @Override
+    public void startGame() {
+        gameDeck = new Deck();
+        shuffleDeck();
+
+        userHand = gameDeck.drawCard(26);
+        dealerHand = gameDeck.drawCard(26);
+
+
+        while (!isGameOver()) {
+            playTurn();
+        }
+
+        endGame();
+    }
+
+    @Override
+    public void playTurn() {
+        if (totalMoney <= 0) {
+            slowPrint("You're out of money!");
+            gameOver = true;
+            return;
+        }
+
+
+        while (true) {
+            slowPrintnln("How much would you like to bet: $");
+            betAmount = input.nextInt();
+
+            if (betAmount > totalMoney) {
+                slowPrint("You only have $" + totalMoney);
+            } else {
                 break;
             }
-            while (true){
-                slowPrintnln("How much would you like to bet: $");
-                betAmount = input.nextInt();
-                if (betAmount > totalMoney){
-                    slowPrint("You don't have that much, try again, you only have $" + totalMoney);
-                } else {
-                    break;
-                }
-            }
-            slowPrint("Player: " + userHand.get(0).getName());
-            slowPrint("Dealer: " + dealerHand.get(0).getName());
-            if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
-                slowPrint("Player wins");
-                totalMoney += betAmount;
-                playerWins++;
-
-            } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
-                slowPrint("Dealer wins");
-                totalMoney -= betAmount;
-                dealerWins++;
-
-            } else {
-                slowPrint("Tie, go to War!");
-                while (true){
-                    if (userHand.size() == 0) {
-                        gameDeck = new Deck();
-                        gameDeck.shuffleDeck();
-                        userHand = gameDeck.drawCard(26);
-                        dealerHand = gameDeck.drawCard(26);
-                    }
-                    slowPrint("Player: " + userHand.get(0).getName());
-                    slowPrint("Dealer: " + dealerHand.get(0).getName());
-                    if (userHand.get(0).getValue() > dealerHand.get(0).getValue()){
-                        slowPrint("Player wins the War");
-                        totalMoney += betAmount;
-                        playerWins++;
-                        break;
-                    } else if (userHand.get(0).getValue() < dealerHand.get(0).getValue()){
-                        slowPrint("Dealer wins the War");
-                        totalMoney -= betAmount;
-                        dealerWins++;
-                        break;
-                    } else {
-                        slowPrint("Tie, go to War! Again");
-                        userHand.remove(0);
-                        dealerHand.remove(0);
-                    }
-                }
-            }
-            slowPrint("You have $" + totalMoney + " left");
-            betAmount = 0;
-            userHand.remove(0);
-            dealerHand.remove(0);
-            if (userHand.size() == 0){
-                gameDeck = new Deck();
-                gameDeck.shuffleDeck();
-                userHand = gameDeck.drawCard(26);
-                dealerHand = gameDeck.drawCard(26);
-            }
-            System.out.println();
         }
-        if (playerWins > dealerWins){
-            slowPrint("Player won the game");
-        } else if (dealerWins > playerWins){
-            slowPrint("Dealer won the game");
-        } else {
-            slowPrint("Tie!!!");
+
+        Card playerCard = userHand.get(0);
+        Card dealerCard = dealerHand.get(0);
+
+        slowPrint("Player: " + playerCard.getName());
+        slowPrint("Dealer: " + dealerCard.getName());
+
+        resolveBattle(playerCard, dealerCard);
+
+        slowPrint("You have $" + totalMoney + " left\n");
+
+        userHand.remove(0);
+        dealerHand.remove(0);
+
+        if (userHand.isEmpty()) {
+            reshuffleHands();
         }
-        return totalMoney;
     }
-    
-    public static void slowPrint(String strMessage) {
-        char[] chars = strMessage.toCharArray();
 
-        for (char c : chars) {
+    @Override
+    public void endGame() {
+
+        if (playerWins > dealerWins) {
+            slowPrint("Player won the game!");
+        } else if (dealerWins > playerWins) {
+            slowPrint("Dealer won the game!");
+        } else {
+            slowPrint("It's a tie!");
+        }
+    }
+
+    @Override
+    public void shuffleDeck() {
+        gameDeck.shuffleDeck();
+    }
+
+    @Override
+    public List<Card> drawCards(int amount) {
+        return gameDeck.drawCard(amount);
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    private void resolveBattle(Card playerCard, Card dealerCard) {
+
+        if (playerCard.getValue() > dealerCard.getValue()) {
+            slowPrint("Player wins");
+            totalMoney += betAmount;
+            playerWins++;
+
+        } else if (playerCard.getValue() < dealerCard.getValue()) {
+            slowPrint("Dealer wins");
+            totalMoney -= betAmount;
+            dealerWins++;
+
+        } else {
+            slowPrint("Tie, go to war!");
+
+            while (true) {
+                if (userHand.isEmpty()) reshuffleHands();
+
+                playerCard = userHand.get(0);
+                dealerCard = dealerHand.get(0);
+
+                slowPrint("Player: " + playerCard.getName());
+                slowPrint("Dealer: " + dealerCard.getName());
+
+                if (playerCard.getValue() > dealerCard.getValue()) {
+                    slowPrint("Player wins the war!");
+                    totalMoney += betAmount;
+                    playerWins++;
+                    break;
+
+                } else if (playerCard.getValue() < dealerCard.getValue()) {
+                    slowPrint("Dealer wins the war!");
+                    totalMoney -= betAmount;
+                    dealerWins++;
+                    break;
+
+                } else {
+                    slowPrint("Tie again, war again!");
+                    userHand.remove(0);
+                    dealerHand.remove(0);
+                }
+            }
+        }
+    }
+
+    private void reshuffleHands() {
+        gameDeck = new Deck();
+        shuffleDeck();
+        userHand = drawCards(26);
+        dealerHand = drawCards(26);
+    }
+
+    public static void slowPrint(String str) {
+        for (char c : str.toCharArray()) {
             System.out.print(c);
-            sleep(50);
+            sleep(40);
         }
         System.out.println();
     }
-    
-    public static void slowPrintnln(String strMessage) {
-        char[] chars = strMessage.toCharArray();
 
-        for (char c : chars) {
+    public static void slowPrintnln(String str) {
+        for (char c : str.toCharArray()) {
             System.out.print(c);
-            sleep(50);
+            sleep(40);
         }
     }
-    
+
     public static void sleep(int time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            // ignored
-        }
-    }
-    
-    public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try { Thread.sleep(time); }
+        catch (InterruptedException ignored) {}
     }
 }
+ 
