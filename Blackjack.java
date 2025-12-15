@@ -30,7 +30,7 @@ public class BlackJack implements Game {
     static String winner = "None";
 
 
-    public static void main(String[] args) {
+    public static void runBlackJack(){
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(contentPane);
