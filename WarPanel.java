@@ -1,8 +1,20 @@
 import java.awt.*;
 import javax.swing.*;
+/**
+ * Simple panel used to host the Casino War UI. Currently this is a
+ * placeholder panel that fills its area; it can be expanded with
+ * interactive controls or graphics later.
+ */
 public class WarPanel extends JPanel{
     int width;
     int height;
+
+    /**
+     * Create a new WarPanel with the given size for rendering.
+     *
+     * @param width panel width
+     * @param height panel height
+     */
     public WarPanel(int width,int height){
         this.width = width;
         this.height = height;

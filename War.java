@@ -21,6 +21,11 @@ public class War implements Game {
         game.startGame();
     }
 
+    /**
+     * Create a console-based War game with a given starting bankroll.
+     *
+     * @param startingMoney initial money available to the player
+     */
     public War(int startingMoney) {
         this.totalMoney = startingMoney;
     }
@@ -41,6 +46,10 @@ public class War implements Game {
 
         endGame();
     }
+
+    /**
+     * Plays the console-based War game loop until the game ends.
+     */
 
     @Override
     public void playTurn() {

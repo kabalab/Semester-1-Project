@@ -40,6 +40,12 @@ public class Vplayer extends JPanel {
         // check initial position
         checkInteractions();
     }
+/**
+ * Simple player sprite component that can be moved with arrow keys.
+ * The component is transparent so it can be layered over a background
+ * (for example, the `Lobby` panel). It also detects interactions with
+ * rectangular "red spot" areas provided by the lobby.
+ */
 
     // ---------------- MOVEMENT ----------------
 
@@ -59,6 +65,10 @@ public class Vplayer extends JPanel {
     }
 
     private class MoveAction extends AbstractAction {
+            /**
+             * MoveAction performs a relative movement on the player when a key
+             * binding is triggered.
+             */
         int dx, dy;
 
         MoveAction(int dx, int dy) {
@@ -73,6 +83,13 @@ public class Vplayer extends JPanel {
     }
 
     private void movePlayer(int dx, int dy) {
+            /**
+             * Move the player by the given delta, clamp to bounds, update parts
+             * and check for interactions.
+             *
+             * @param dx horizontal movement
+             * @param dy vertical movement
+             */
         x += dx;
         y += dy;
         bound();
@@ -181,12 +198,26 @@ public class Vplayer extends JPanel {
                 600, 150, 50,
                 WIDTH, HEIGHT,
                 lobby.getRedSpots()
+            /**
+             * Checks whether the player intersects any red spot and triggers
+             * an enter event once per entry.
+             */
         );
 
         frame.setSize(1200, 600);
-        frame.setTitle("Casino Lobby");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocation(0, 200);
+            // ---------------- PLAYER LOGIC ----------------
+
+            /**
+             * Returns whether a given room index is considered "visible".
+             * This is a placeholder for future room-based visibility logic; for
+             * now it returns true for valid room indices.
+             *
+             * @param room room index to check
+             * @return true when the room index is within the expected range
+             */
+            public boolean isVis(int room) {
+                return room >= 0 && room < 4;
+            }
         frame.setResizable(false);
 
         // use absolute positioning so both panels occupy the same space

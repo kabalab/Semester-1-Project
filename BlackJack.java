@@ -2,6 +2,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.List;
 
+/**
+ * Simple Blackjack GUI game. This class provides a very small Swing-based
+ * Blackjack UI used from the lobby. It currently uses static methods to
+ * open the window and generate a starter menu.
+ */
 public class BlackJack implements Game {
 
 
@@ -31,6 +36,9 @@ public class BlackJack implements Game {
 
 
     public static void runBlackJack(){
+        /**
+         * Open the Blackjack window and show the main menu.
+         */
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(contentPane);
@@ -42,6 +50,12 @@ public class BlackJack implements Game {
 
 
     public static void click(JButton button) {
+        /**
+         * Handle click events coming from blackjack buttons present in the
+         * game's UI panels.
+         *
+         * @param button the button that was pressed
+         */
         switch (button.getText()) {
 
             case "START" -> game.startGame();
@@ -65,6 +79,11 @@ public class BlackJack implements Game {
     }
 
     private static void bet(int amount) {
+        /**
+         * Add a bet amount from the player's available money.
+         *
+         * @param amount amount to place
+         */
         if (playerMoney >= amount) {
             betAmount += amount;
             playerMoney -= amount;
@@ -75,6 +94,9 @@ public class BlackJack implements Game {
 
 
     public static void genMenu() {
+        /**
+         * Create and display the main menu for Blackjack (START button).
+         */
         contentPane.removeAll();
         contentPane.setLayout(null);
 
@@ -88,6 +110,10 @@ public class BlackJack implements Game {
 
 
     public void genGame() {
+        /**
+         * Generate the Blackjack in-game UI: draw initial hands, set labels
+         * and create control buttons for drawing and finishing a turn.
+         */
         contentPane.removeAll();
         contentPane.setLayout(null);
 
@@ -176,6 +202,11 @@ public class BlackJack implements Game {
 
     @Override
     public void playTurn() {
+        /**
+         * Complete the player's turn and play the dealer's hand according
+         * to standard Blackjack rules, then distribute the bet and
+         * re-generate the game UI with results.
+         */
         List<Card> dealerHand = dealer.getHand();
 
         contentPane.remove(hiddenDealerCard);
@@ -211,6 +242,9 @@ public class BlackJack implements Game {
 
     @Override
     public void startGame() {
+        /**
+         * Prepare a new deck and shuffle it, reset bets and start a new game.
+         */
         gameDeck = new Deck();
         gameDeck.shuffleDeck();
         betAmount = 0;

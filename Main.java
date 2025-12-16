@@ -1,7 +1,17 @@
 
 import javax.swing.*;
 
+/**
+ * Application entry point that composes the casino lobby and movable player UI.
+ * Starts the Swing UI on the Event Dispatch Thread and places the player inside
+ * the lobby so the arrow keys control the player sprite.
+ */
 public class Main {
+    /**
+     * Launch the application UI. This method runs on the EDT.
+     *
+     * @param args unused
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             int WIDTH = 1200 - 16;
