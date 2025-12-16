@@ -1,5 +1,7 @@
 # Semester-1-Project
 
+Run Main.java to run the program
+
 This is a casino with only two games so far: Blackjack and Casino War. Each one of them have betting features
 You can travel between each games through the lobby where you control your character to go to tunnels which open up games.
 There is Blackjack and Casino War for you to play
