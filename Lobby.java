@@ -12,6 +12,11 @@ public class Lobby extends JPanel{
     private final int width;
     private final int height;
     private final int carpetWidth;
+    // number of tiles used for the tiled floor and randomized offsets
+    private final int tileNum = 40;
+    // deterministic random offsets computed once so the background doesn't "move" on repaint
+    private final int ranX;
+    private final int ranY;
     private final Color red = new Color(122, 0, 0);
     private final int[][] redSpots; // Stores the coordinates and sizes of the red rectangles
 
@@ -39,7 +44,22 @@ public class Lobby extends JPanel{
                                 {width-carpetWidth,height-carpetWidth,carpetWidth,carpetWidth},
                                 {width-carpetWidth*4,height-carpetWidth,carpetWidth,carpetWidth}
                                 };
+
+        // compute stable random offsets so tiles don't appear to move when the panel repaints
+        double dx = width/(tileNum*2.5);
+        ranX = (int) (Math.random()*(dx*2) - dx);
+        ranY = (int) (Math.random()*(dx*2) - dx);
     }   
+
+    /**
+     * Expose the red interaction rectangles so other components (e.g. a player)
+     * can detect and respond to entering them.
+     *
+     * @return array of {x,y,w,h} rectangles for the interactive spots
+     */
+    public int[][] getRedSpots() {
+        return redSpots;
+    }
 
     /**
      * Creates and places a centered JLabel at the given location.
@@ -77,10 +97,7 @@ public class Lobby extends JPanel{
         p.setColor(new Color(138, 109, 25));
         p.fillRect(0, 0, width, height);
         p.setColor(Color.BLACK);
-        int tileNum = 40;
-        // Tile pattern offsets
-        int ranX = (int) (Math.random()*(width/(tileNum*2.5)*2)-(width/(tileNum*2.5)));
-        int ranY = (int) (Math.random()*(width/(tileNum*2.5)*2)-(width/(tileNum*2.5)));
+        // Tile pattern offsets use the precomputed stable values
         for (int h = 0;h < tileNum*1.5;h++){
             for (int i = 0;i < tileNum*1.5;i++){
                 drawTile(p, (int) (width/(tileNum*1.5)*i) + ranX, (int) (width/(tileNum*1.5)*h) - ((i%2 == 0) ? 0 : (int) (width/(tileNum*1.5)/2)) + ranY,(int) (width/(tileNum*2.5)));
