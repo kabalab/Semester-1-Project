@@ -28,15 +28,15 @@ java Lobby
 - Java Swing based graphics and input handling
 
 ## Class Diagram
-![Class Diagram](ClassDiagram.png)
+![Class Diagram](images/ClassDiagram.png)
 
 ## Lobby Design References
 
 ### Flooring Inspiration
-![Lobby Flooring Reference](LobbyFlooring.png)
+![Lobby Flooring Reference](images/LobbyFlooring.jpg)
 
 ### Initial Lobby Sketch
-![Lobby Sketch](LobbySketch.png)
+![Lobby Sketch](images/LobbySketch.png)
 
 ## Team Roles
 Lead Programmer: Kaleb Fling  
